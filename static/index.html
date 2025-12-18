@@ -1,9 +1,54 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Static files example</title>
-    </head>
-    <body>
-        <p>This is an example to serve static files on Koyeb.</p>
-    </body>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>특수 블랙잭 (0~7, 목표 15)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="table">
+    <!-- DEALER (상단 중앙) -->
+    <section id="dealer" class="zone">
+      <div class="sum-indicator">
+        <div class="label">DEALER</div>
+        <div class="sum" id="dealerSum">?</div>
+      </div>
+      <div class="hand" id="dealerHand"></div>
+    </section>
+
+    <!-- CENTER DECK (가운데) -->
+    <section id="center">
+      <div id="deckStack">
+        <div class="stack-card"></div>
+        <div class="stack-card"></div>
+        <div class="stack-card"></div>
+      </div>
+      <div id="deckCount">덱: <span id="deckLeft">0</span></div>
+    </section>
+
+    <!-- PLAYER (하단 중앙) -->
+    <section id="player" class="zone">
+      <div id="playerBlocks"><!-- 스플릿 시 2개 블록 생성 --></div>
+
+      <div id="moneyRow">
+        <div class="money-box">
+          <div class="label">MONEY</div>
+          <div class="value" id="money">0</div>
+        </div>
+        <div class="money-box">
+          <div class="label">BET</div>
+          <div class="value" id="bet">0</div>
+        </div>
+      </div>
+
+      <div id="betRow">
+        <button id="btnBet">BET +500</button>
+        <button id="btnDeal">DEAL</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="main.js"></script>
+</body>
 </html>

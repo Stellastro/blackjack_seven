@@ -1,0 +1,235 @@
+:root{
+  --cardW: 80px;
+  --cardH: 120px;
+  --gap: 10px;
+  --panel: rgba(0,0,0,.45);
+  --hl: rgba(255, 213, 79, .25);
+}
+
+*{ box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: system-ui, sans-serif;
+  color:#fff;
+  background: #031f12 url("bg/bg.png") center/cover no-repeat fixed;
+}
+
+#table{
+  position: relative;
+  width: min(980px, 100%);
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 14px;
+  display: grid;
+  grid-template-rows: 1fr 180px 1.2fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.zone{
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.sum-indicator{
+  display:flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.sum-indicator .label{
+  font-weight: 700;
+  letter-spacing: .06em;
+  opacity: .9;
+}
+.sum-indicator .sum{
+  font-size: 28px;
+  font-weight: 800;
+  min-width: 36px;
+  text-align: center;
+}
+
+.hand{
+  display:flex;
+  gap: var(--gap);
+  justify-content: center;
+  align-items: center;
+  min-height: calc(var(--cardH) + 10px);
+  flex-wrap: wrap;
+}
+
+/* CENTER */
+#center{
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  height: 180px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+#deckStack{
+  position: relative;
+  width: var(--cardW);
+  height: var(--cardH);
+}
+.stack-card{
+  position:absolute;
+  inset:0;
+  background: url("cards/back.png") center/cover no-repeat;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.6);
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+}
+.stack-card:nth-child(1){ transform: translate(0px, 0px); }
+.stack-card:nth-child(2){ transform: translate(4px, -3px); opacity:.95;}
+.stack-card:nth-child(3){ transform: translate(8px, -6px); opacity:.9;}
+
+#deckCount{
+  font-size: 12px;
+  opacity: .9;
+  background: rgba(0,0,0,.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* PLAYER */
+#playerBlocks{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.player-block{
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid transparent;
+}
+.player-block.active{
+  border-color: rgba(255, 213, 79, .75);
+  background: var(--hl);
+}
+.player-head{
+  display:flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.player-head .label{ font-weight: 800; letter-spacing: .06em;}
+.player-head .sum{ font-size: 26px; font-weight: 900; min-width: 36px; text-align:center;}
+
+.player-actions{
+  display:flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#moneyRow{
+  display:flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 10px 0 10px;
+}
+.money-box{
+  min-width: 140px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.25);
+  text-align:center;
+}
+.money-box .label{ font-size: 12px; opacity: .9; letter-spacing: .06em; font-weight: 800;}
+.money-box .value{ font-size: 18px; font-weight: 900; margin-top: 4px;}
+
+#betRow{
+  display:flex;
+  justify-content: center;
+  gap: 10px;
+}
+button{
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+button:disabled{ opacity:.45; cursor:not-allowed; }
+
+/* CARD (flip) */
+/* === FLIP CARD FIX (필수) === */
+.card{
+  width: var(--cardW);
+  height: var(--cardH);
+  position: relative;
+  perspective: 900px;
+  overflow: hidden;         /* 레이아웃 삐져나오는 것 방지 */
+}
+
+.card-inner{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 280ms ease;
+}
+
+.card.is-face .card-inner{
+  transform: rotateY(180deg);
+}
+
+.card-back, .card-face{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.6);
+}
+
+.card-face{
+  transform: rotateY(180deg);
+}
+
+/* img가 레이아웃을 만들지 않게 absolute로 덮기 */
+.card-back img, .card-face img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;  /* 꽉 채우기: 빈 공간 없게 */
+}
+
+/* dealing motion (center -> hand) */
+.flying{
+  position: absolute !important;
+  left: 0; top: 0;
+  margin: 0 !important;
+  z-index: 50;
+  transition: transform 420ms ease;
+  pointer-events: none;
+}
+
+/* round end fade */
+.fade-out{
+  opacity: 1;
+  transition: opacity 420ms ease;
+}
+.fade-out.go{
+  opacity: 0;
+}
